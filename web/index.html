@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Sora:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/static/styles.css?v=23" />
+    <link rel="stylesheet" href="/static/styles.css?v=24" />
   </head>
   <body>
     <main class="page-shell">
@@ -285,10 +285,43 @@
             </div>
             <h3>Our Model</h3>
             <p>
-              The predictor is powered by a local MNIST-trained <code>MLPClassifier(hidden_layer_sizes=(256, 128))</code>. The pipeline normalizes strokes, detects separate digit regions, and scores each active region with confidence values.
+              The predictor is powered by a local MNIST-trained <code>MLPClassifier(hidden_layer_sizes=(256, 128))</code>. A binary rejector then filters uncertain marks and non-digit strokes before the UI commits a final answer, while the pipeline still normalizes strokes, detects separate digit regions, and scores each active region with confidence values.
             </p>
           </article>
         </div>
+
+        <article class="pipeline-card" aria-label="Project pipeline timeline">
+          <div class="pipeline-card__summary">
+            <p class="pipeline-card__label">Pipeline timeline</p>
+            <h4 id="pipeline-step-title">1. Capture the canvas stroke</h4>
+            <p id="pipeline-step-copy">
+              The browser records what you draw, tracks the latest selection hint, and keeps the active stroke in sync with the live canvas.
+            </p>
+          </div>
+
+          <div class="pipeline-steps" aria-label="Pipeline steps">
+            <button class="pipeline-step is-active" type="button" data-step-title="1. Capture the canvas stroke" data-step-copy="The browser records what you draw, tracks the latest selection hint, and keeps the active stroke in sync with the live canvas.">
+              <span class="pipeline-step__index">01</span>
+              <span class="pipeline-step__text">Capture the canvas stroke.</span>
+            </button>
+            <button class="pipeline-step" type="button" data-step-title="2. Normalize and center" data-step-copy="The backend converts the drawing into an MNIST-like frame, normalizes the pixels, and prepares the image for the classifier.">
+              <span class="pipeline-step__index">02</span>
+              <span class="pipeline-step__text">Normalize and center the image.</span>
+            </button>
+            <button class="pipeline-step" type="button" data-step-title="3. Segment digit regions" data-step-copy="Foreground regions are split so the app can understand one digit at a time, even when the canvas contains multiple marks.">
+              <span class="pipeline-step__index">03</span>
+              <span class="pipeline-step__text">Segment the digit regions.</span>
+            </button>
+            <button class="pipeline-step" type="button" data-step-title="4. Classify with MNIST" data-step-copy="A local MLPClassifier scores every candidate digit and produces the full probability breakdown that feeds the UI.">
+              <span class="pipeline-step__index">04</span>
+              <span class="pipeline-step__text">Classify with the MNIST model.</span>
+            </button>
+            <button class="pipeline-step" type="button" data-step-title="5. Gate with the rejector" data-step-copy="A binary rejector checks the classifier confidence, geometry, and stroke density to flag uncertain or non-digit input.">
+              <span class="pipeline-step__index">05</span>
+              <span class="pipeline-step__text">Reject uncertain marks safely.</span>
+            </button>
+          </div>
+        </article>
       </section>
 
       <section class="overview-section features-section" id="features-section" data-section>
@@ -302,9 +335,27 @@
 
         <div class="feature-story-list">
           <article class="feature-story">
-            <div class="feature-story__media">
-              <img src="/static/images/current/workflow-light.gif" alt="Light mode feature demo showing drawing and prediction refresh." class="theme-media theme-media--light" />
-              <img src="/static/images/current/workflow-dark.gif" alt="Dark mode feature demo showing drawing and prediction refresh." class="theme-media theme-media--dark" />
+            <div class="feature-story__media feature-story__media--infographic" aria-hidden="true">
+              <div class="feature-visual feature-visual--drawing">
+                <div class="feature-visual__head">
+                  <span class="feature-visual__title">Live stroke</span>
+                  <span class="feature-visual__pill">Realtime</span>
+                </div>
+
+                <div class="feature-visual__canvas">
+                  <span class="feature-visual__grid"></span>
+                  <span class="feature-visual__stroke feature-visual__stroke--one"></span>
+                  <span class="feature-visual__stroke feature-visual__stroke--two"></span>
+                  <span class="feature-visual__stroke feature-visual__stroke--three"></span>
+                  <span class="feature-visual__hint">Draw → normalize → predict</span>
+                </div>
+
+                <div class="feature-visual__legend">
+                  <span class="feature-visual__legend-chip">Pen</span>
+                  <span class="feature-visual__legend-chip">Undo</span>
+                  <span class="feature-visual__legend-chip">Live update</span>
+                </div>
+              </div>
             </div>
             <div class="feature-story__body">
               <span class="feature-story__icon" aria-hidden="true">
@@ -327,9 +378,25 @@
           </article>
 
           <article class="feature-story feature-story--reverse">
-            <div class="feature-story__media">
-              <img src="/static/images/current/selection-light.png" alt="Light mode screenshot showing multi-digit selection on the current app." class="theme-media theme-media--light" />
-              <img src="/static/images/current/selection-dark.png" alt="Dark mode screenshot showing multi-digit selection on the current app." class="theme-media theme-media--dark" />
+            <div class="feature-story__media feature-story__media--infographic" aria-hidden="true">
+              <div class="feature-visual feature-visual--selection">
+                <div class="feature-visual__head">
+                  <span class="feature-visual__title">Multi-digit regions</span>
+                  <span class="feature-visual__pill">Select</span>
+                </div>
+
+                <div class="feature-visual__selection-board">
+                  <span class="feature-visual__region is-muted">2</span>
+                  <span class="feature-visual__region is-active">1</span>
+                  <span class="feature-visual__region is-muted">2</span>
+                </div>
+
+                <div class="feature-visual__legend feature-visual__legend--split">
+                  <span>left region</span>
+                  <span>active region</span>
+                  <span>right region</span>
+                </div>
+              </div>
             </div>
             <div class="feature-story__body">
               <span class="feature-story__icon" aria-hidden="true">
@@ -352,9 +419,31 @@
           </article>
 
           <article class="feature-story">
-            <div class="feature-story__media">
-              <img src="/static/images/current/insights-light.png" alt="Light mode screenshot showing probability breakdown and history in the current app." class="theme-media theme-media--light" />
-              <img src="/static/images/current/insights-dark.png" alt="Dark mode screenshot showing probability breakdown and history in the current app." class="theme-media theme-media--dark" />
+            <div class="feature-story__media feature-story__media--infographic" aria-hidden="true">
+              <div class="feature-visual feature-visual--probability">
+                <div class="feature-visual__head">
+                  <span class="feature-visual__title">Confidence analysis</span>
+                  <span class="feature-visual__pill">Rejector aware</span>
+                </div>
+
+                <div class="feature-visual__chart" role="img" aria-label="Probability chart with a highlighted top digit and supporting confidence bars.">
+                  <span class="feature-visual__bar" style="--bar-height: 16%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 14%;"></span>
+                  <span class="feature-visual__bar is-peak" style="--bar-height: 98%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 18%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 12%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 10%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 11%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 9%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 18%;"></span>
+                  <span class="feature-visual__bar" style="--bar-height: 15%;"></span>
+                </div>
+
+                <div class="feature-visual__footer">
+                  <span class="feature-visual__stat"><strong>97.8%</strong> top score</span>
+                  <span class="feature-visual__stat">Rejector gates uncertainty</span>
+                </div>
+              </div>
             </div>
             <div class="feature-story__body">
               <span class="feature-story__icon" aria-hidden="true">
