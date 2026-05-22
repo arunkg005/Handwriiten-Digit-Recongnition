@@ -7,7 +7,7 @@ import io
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 import numpy as np
 from pydantic import BaseModel
@@ -118,6 +118,10 @@ def create_app(predictor: DigitRecognitionService | None = None) -> FastAPI:
     @app.get("/")
     def index() -> FileResponse:
         return FileResponse(WEB_DIR / "index.html")
+
+    @app.get("/robots.txt")
+    def robots_txt() -> PlainTextResponse:
+        return PlainTextResponse("User-agent: *\nAllow: /\n")
 
     return app
 

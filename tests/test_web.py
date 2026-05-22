@@ -63,6 +63,15 @@ def test_index_route_renders_dashboard(predictor):
     assert "Probability Breakdown" in response.text
 
 
+def test_robots_route_serves_crawler_directives(predictor):
+    client = TestClient(create_app(predictor=predictor))
+
+    response = client.get("/robots.txt")
+
+    assert response.status_code == 200
+    assert response.text == "User-agent: *\nAllow: /\n"
+
+
 def test_predict_endpoint_returns_prediction(mnist_dataset, digit_service):
     client = TestClient(create_app(predictor=digit_service))
     image = Image.fromarray(mnist_dataset.x_test[0]).convert("RGBA")
