@@ -30,8 +30,7 @@
   const rerunPredictionButton = document.getElementById("rerun-prediction-button");
   const pageSectionLinks = Array.from(document.querySelectorAll("[data-section-link]"));
   const pageSections = Array.from(document.querySelectorAll("[data-section]"));
-  const pipelineNodes = Array.from(document.querySelectorAll(".pipeline-node"));
-  const pipelineInfoCards = Array.from(document.querySelectorAll(".pipeline-info"));
+  const pipelineStepBoxes = Array.from(document.querySelectorAll(".pipeline-step-box"));
 
   const displayCtx = canvas.getContext("2d");
   const modelCanvas = document.createElement("canvas");
@@ -198,33 +197,27 @@
     syncActiveSectionLink();
   }
 
-  function setActivePipelineNode(nodeButton) {
-    if (!nodeButton) return;
-    const stepIndex = nodeButton.dataset.step;
-
-    pipelineNodes.forEach((node) => {
-      const isActive = node === nodeButton;
-      node.classList.toggle("is-active", isActive);
-      node.setAttribute("aria-pressed", String(isActive));
-    });
-
-    pipelineInfoCards.forEach((card) => {
-      card.classList.toggle("is-active", card.dataset.info === stepIndex);
+  function setActivePipelineStep(activeBox) {
+    if (!activeBox) return;
+    pipelineStepBoxes.forEach((box) => {
+      const isActive = box === activeBox;
+      box.classList.toggle("is-active", isActive);
+      box.setAttribute("aria-selected", String(isActive));
     });
   }
 
   function initializePipelineSteps() {
-    if (pipelineNodes.length === 0) {
+    if (pipelineStepBoxes.length === 0) {
       return;
     }
 
-    pipelineNodes.forEach((nodeButton) => {
-      nodeButton.addEventListener("click", () => setActivePipelineNode(nodeButton));
-      nodeButton.addEventListener("mouseenter", () => setActivePipelineNode(nodeButton));
-      nodeButton.addEventListener("focus", () => setActivePipelineNode(nodeButton));
+    pipelineStepBoxes.forEach((box) => {
+      box.addEventListener("click", () => setActivePipelineStep(box));
+      box.addEventListener("mouseenter", () => setActivePipelineStep(box));
+      box.addEventListener("focusin", () => setActivePipelineStep(box));
     });
 
-    setActivePipelineNode(pipelineNodes[0]);
+    setActivePipelineStep(pipelineStepBoxes[0]);
   }
 
   function clearRegionState() {

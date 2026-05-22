@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Sora:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/static/styles.css?v=27" />
+    <link rel="stylesheet" href="/static/styles.css?v=28" />
   </head>
   <body>
     <main class="page-shell">
@@ -293,100 +293,78 @@
         <article class="pipeline-card" aria-label="Project pipeline timeline">
           <p class="pipeline-card__label">Pipeline</p>
 
-          <!-- Visual Timeline rail -->
-          <div class="pipeline-timeline" role="list" aria-label="Pipeline steps">
+          <div class="pipeline-container">
+            <div class="pipeline-timeline-flow">
+              <!-- The main horizontal line on desktop, vertical line on mobile -->
+              <div class="pipeline-main-line" aria-hidden="true"></div>
 
-            <!-- Step 1 -->
-            <button class="pipeline-node is-active" type="button" role="listitem"
-              data-step="0" aria-pressed="true">
-              <span class="pipeline-node__bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m4 20 1.1-4.1L15.9 5.1a1.7 1.7 0 0 1 2.4 0l.6.6a1.7 1.7 0 0 1 0 2.4L8.1 18.9 4 20Zm9.8-12.6 2.8 2.8"/>
-                </svg>
-              </span>
-              <span class="pipeline-node__index" aria-hidden="true">01</span>
-            </button>
+              <!-- The 5 steps -->
+              <div class="pipeline-steps-wrapper">
+                <!-- Step 1 -->
+                <div class="pipeline-step-box is-active" data-step="0" tabindex="0">
+                  <div class="pipeline-step-node" aria-hidden="true">
+                    <span class="pipeline-step-dot"></span>
+                  </div>
+                  <div class="pipeline-step-stem" aria-hidden="true"></div>
+                  <div class="pipeline-step-content">
+                    <span class="pipeline-step-number">01</span>
+                    <h3 class="pipeline-step-title">Capture Stroke</h3>
+                    <p class="pipeline-step-desc">The browser records what you draw, tracks the latest selection hint, and keeps the active stroke in sync with the live canvas.</p>
+                  </div>
+                </div>
 
-            <span class="pipeline-connector" aria-hidden="true">
-              <span class="pipeline-connector__line"></span>
-              <svg class="pipeline-connector__arrow" viewBox="0 0 12 12" fill="currentColor"><path d="M3 1l6 5-6 5V1z"/></svg>
-            </span>
+                <!-- Step 2 -->
+                <div class="pipeline-step-box" data-step="1" tabindex="0">
+                  <div class="pipeline-step-node" aria-hidden="true">
+                    <span class="pipeline-step-dot"></span>
+                  </div>
+                  <div class="pipeline-step-stem" aria-hidden="true"></div>
+                  <div class="pipeline-step-content">
+                    <span class="pipeline-step-number">02</span>
+                    <h3 class="pipeline-step-title">Normalize</h3>
+                    <p class="pipeline-step-desc">Converts the drawing into a 28×28 MNIST frame, normalizes pixels, and centers the digit to match training data distribution.</p>
+                  </div>
+                </div>
 
-            <!-- Step 2 -->
-            <button class="pipeline-node" type="button" role="listitem"
-              data-step="1" aria-pressed="false">
-              <span class="pipeline-node__bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
-                </svg>
-              </span>
-              <span class="pipeline-node__index" aria-hidden="true">02</span>
-              <span class="pipeline-node__label">Normalize</span>
-            </button>
+                <!-- Step 3 -->
+                <div class="pipeline-step-box" data-step="2" tabindex="0">
+                  <div class="pipeline-step-node" aria-hidden="true">
+                    <span class="pipeline-step-dot"></span>
+                  </div>
+                  <div class="pipeline-step-stem" aria-hidden="true"></div>
+                  <div class="pipeline-step-content">
+                    <span class="pipeline-step-number">03</span>
+                    <h3 class="pipeline-step-title">Segment</h3>
+                    <p class="pipeline-step-desc">Foreground regions are split so the app understands one digit at a time, even when the canvas has multiple marks.</p>
+                  </div>
+                </div>
 
-            <span class="pipeline-connector" aria-hidden="true">
-              <span class="pipeline-connector__line"></span>
-              <svg class="pipeline-connector__arrow" viewBox="0 0 12 12" fill="currentColor"><path d="M3 1l6 5-6 5V1z"/></svg>
-            </span>
+                <!-- Step 4 -->
+                <div class="pipeline-step-box" data-step="3" tabindex="0">
+                  <div class="pipeline-step-node" aria-hidden="true">
+                    <span class="pipeline-step-dot"></span>
+                  </div>
+                  <div class="pipeline-step-stem" aria-hidden="true"></div>
+                  <div class="pipeline-step-content">
+                    <span class="pipeline-step-number">04</span>
+                    <h3 class="pipeline-step-title">Classify</h3>
+                    <p class="pipeline-step-desc">A local MLPClassifier(256, 128) scores every candidate region and produces the full 10-class probability breakdown.</p>
+                  </div>
+                </div>
 
-            <!-- Step 3 -->
-            <button class="pipeline-node" type="button" role="listitem"
-              data-step-title="Segment digit regions"
-              data-step-copy="Foreground regions are split so the app can understand one digit at a time, even when the canvas contains multiple marks drawn side by side."
-              aria-pressed="false">
-              <span class="pipeline-node__bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/>
-                </svg>
-              </span>
-              <span class="pipeline-node__index" aria-hidden="true">03</span>
-              <span class="pipeline-node__label">Segment</span>
-            </button>
-
-            <span class="pipeline-connector" aria-hidden="true">
-              <span class="pipeline-connector__line"></span>
-              <svg class="pipeline-connector__arrow" viewBox="0 0 12 12" fill="currentColor"><path d="M3 1l6 5-6 5V1z"/></svg>
-            </span>
-
-            <!-- Step 4 -->
-            <button class="pipeline-node" type="button" role="listitem"
-              data-step-title="Classify with MNIST"
-              data-step-copy="A local MLPClassifier(256, 128) scores every candidate digit region and produces the full 10-class probability breakdown that feeds the results panel."
-              aria-pressed="false">
-              <span class="pipeline-node__bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
-                </svg>
-              </span>
-              <span class="pipeline-node__index" aria-hidden="true">04</span>
-              <span class="pipeline-node__label">Classify</span>
-            </button>
-
-            <span class="pipeline-connector" aria-hidden="true">
-              <span class="pipeline-connector__line"></span>
-              <svg class="pipeline-connector__arrow" viewBox="0 0 12 12" fill="currentColor"><path d="M3 1l6 5-6 5V1z"/></svg>
-            </span>
-
-            <!-- Step 5 -->
-            <button class="pipeline-node" type="button" role="listitem"
-              data-step-title="Gate with the rejector"
-              data-step-copy="A binary rejector cross-checks classifier confidence, bounding-box geometry, and stroke density to catch uncertain or non-digit input before it reaches the UI."
-              aria-pressed="false">
-              <span class="pipeline-node__bubble" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 3l9 4.5v5C21 17.2 17 21 12 21S3 17.2 3 12.5v-5L12 3z"/>
-                </svg>
-              </span>
-              <span class="pipeline-node__index" aria-hidden="true">05</span>
-              <span class="pipeline-node__label">Gate &amp; Reject</span>
-            </button>
-          </div>
-
-          <!-- Detail panel -->
-          <div class="pipeline-detail" id="pipeline-detail" aria-live="polite">
-            <div class="pipeline-detail__inner">
-              <p class="pipeline-detail__title" id="pipeline-detail-title">Capture the canvas stroke</p>
-              <p class="pipeline-detail__copy" id="pipeline-detail-copy">The browser records what you draw, tracks the latest selection hint, and keeps the active stroke in sync with the live canvas.</p>
+                <!-- Step 5 -->
+                <div class="pipeline-step-box" data-step="4" tabindex="0">
+                  <div class="pipeline-step-node" aria-hidden="true">
+                    <span class="pipeline-step-dot"></span>
+                  </div>
+                  <div class="pipeline-step-stem" aria-hidden="true"></div>
+                  <div class="pipeline-step-content">
+                    <span class="pipeline-step-number">05</span>
+                    <h3 class="pipeline-step-title">Gate &amp; Reject</h3>
+                    <p class="pipeline-step-desc">A binary rejector cross-checks classifier confidence, bounding-box geometry, and stroke density to block uncertain or non-digit input.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </article>
@@ -518,6 +496,6 @@
       </section>
     </main>
 
-    <script src="/static/app.js?v=24"></script>
+    <script src="/static/app.js?v=25"></script>
   </body>
 </html>

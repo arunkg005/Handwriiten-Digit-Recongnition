@@ -439,180 +439,221 @@ html:not(.light-theme) .theme-media--light {
   text-transform: uppercase;
 }
 
-/* ── Pipeline Visual Timeline ────────────────────────────────────── */
+/* ── Redesigned Pipeline Visual Timeline ─────────────────────────── */
 
-/* Outer wrapper — column layout */
-.pipeline-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.pipeline-card {
+  margin-top: 16px;
+  padding: 24px;
+  border: 1px solid var(--outline-soft);
+  border-radius: var(--radius-lg);
+  background: rgba(78, 222, 163, 0.035);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
-/* ── Top rail: icon bubbles + connectors ── */
-.pipeline-timeline {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding: 10px 4px 4px;
-  scrollbar-width: none;
-}
-
-.pipeline-timeline::-webkit-scrollbar {
-  display: none;
-}
-
-/* Node button — just the circle, no text */
-.pipeline-node {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 0 0 auto;
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-/* Circular icon bubble */
-.pipeline-node__bubble {
+.pipeline-container {
   position: relative;
+  width: 100%;
+  padding: 20px 0 10px;
+}
+
+.pipeline-timeline-flow {
+  position: relative;
+  width: 100%;
+}
+
+/* Central horizontal line on desktop */
+.pipeline-main-line {
+  position: absolute;
+  top: 10px; /* Aligns with the center of the 20px dot container */
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--outline-soft), var(--primary-muted) 50%, var(--outline-soft));
+  border-radius: 999px;
+  z-index: 1;
+}
+
+.pipeline-steps-wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.pipeline-step-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Node Dot wrapper */
+.pipeline-step-node {
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 999px;
-  border: 2px solid var(--outline-soft);
-  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), var(--surface);
-  color: var(--text-soft);
+  z-index: 3;
+}
+
+/* Dot on the timeline */
+.pipeline-step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--outline-strong);
+  border: 2px solid var(--surface-low);
+  box-shadow: 0 0 0 2px var(--outline-soft);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pipeline-step-box:hover .pipeline-step-dot {
+  background: var(--primary);
+  transform: scale(1.25);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.pipeline-step-box:focus-visible .pipeline-step-dot {
+  background: var(--primary);
+  transform: scale(1.25);
+  box-shadow: 0 0 0 4px rgba(78, 222, 163, 0.25);
+}
+
+.pipeline-step-box.is-active .pipeline-step-dot {
+  background: var(--primary);
+  transform: scale(1.4);
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 10px 2px var(--primary);
+}
+
+/* Vertical stem */
+.pipeline-step-stem {
+  width: 2px;
+  height: 24px;
+  background: var(--outline-soft);
+  transition: background 0.22s ease;
+}
+
+.pipeline-step-box:hover .pipeline-step-stem {
+  background: rgba(78, 222, 163, 0.4);
+}
+
+.pipeline-step-box.is-active .pipeline-step-stem {
+  background: var(--primary);
+}
+
+/* Step Card content box */
+.pipeline-step-content {
+  width: 100%;
+  padding: 18px 16px;
+  border: 1px solid var(--outline-soft);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.015)), var(--surface);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition:
     border-color 0.22s ease,
     background 0.22s ease,
     box-shadow 0.22s ease,
-    color 0.22s ease,
-    transform 0.2s ease;
+    transform 0.22s ease;
 }
 
-.pipeline-node__bubble svg {
-  width: 20px;
-  height: 20px;
-  display: block;
-  flex-shrink: 0;
+.pipeline-step-box:hover .pipeline-step-content {
+  border-color: rgba(78, 222, 163, 0.3);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)), var(--surface-high);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.pipeline-node:hover .pipeline-node__bubble {
-  border-color: rgba(78, 222, 163, 0.38);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.12);
-  color: var(--text);
+.pipeline-step-box:focus-visible .pipeline-step-content {
+  border-color: rgba(78, 222, 163, 0.5);
+  background: var(--surface-high);
 }
 
-.pipeline-node.is-active .pipeline-node__bubble {
+.pipeline-step-box.is-active .pipeline-step-content {
   border-color: var(--primary);
-  background: linear-gradient(135deg, rgba(78,222,163,0.2), rgba(78,222,163,0.07));
+  background: linear-gradient(180deg, rgba(78, 222, 163, 0.06), rgba(78, 222, 163, 0.01)), var(--surface-high);
   box-shadow:
-    0 0 0 4px rgba(78,222,163,0.12),
-    0 8px 22px rgba(16, 185, 129, 0.18);
-  color: var(--primary);
-  transform: translateY(-3px);
+    0 8px 24px rgba(16, 185, 129, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
 }
 
-/* Number badge — top-right corner of bubble */
-.pipeline-node__index {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  border: 1.5px solid var(--surface-low);
-  background: rgba(78, 222, 163, 0.18);
-  color: var(--primary);
-  font-size: 0.62rem;
+.pipeline-step-number {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 0.8rem;
   font-weight: 700;
-  line-height: 1;
-  pointer-events: none;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  letter-spacing: 0.06em;
+  transition: color 0.22s ease;
 }
 
-.pipeline-node.is-active .pipeline-node__index {
-  background: var(--primary);
-  color: #07180e;
-  border-color: var(--primary);
-}
-
-/* Connector line + arrow between nodes */
-.pipeline-connector {
-  display: flex;
-  align-items: center;
-  flex: 1 1 auto;
-  min-width: 16px;
-  max-width: 64px;
-}
-
-.pipeline-connector__line {
-  flex: 1;
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(78,222,163,0.38), rgba(78,222,163,0.12));
-}
-
-.pipeline-connector__arrow {
-  width: 9px;
-  height: 9px;
-  flex-shrink: 0;
-  color: rgba(78, 222, 163, 0.4);
-  margin-left: -1px;
-}
-
-/* ── Bottom row: 5 info cards, one per step ── */
-.pipeline-info-row {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.pipeline-info {
-  padding: 12px 14px;
-  border: 1px solid var(--outline-soft);
-  border-radius: var(--radius-md);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)), var(--surface);
-  opacity: 0.52;
-  transition:
-    opacity 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.pipeline-info.is-active {
-  border-color: rgba(78, 222, 163, 0.38);
-  background: linear-gradient(135deg, rgba(78,222,163,0.1), rgba(78,222,163,0.03));
-  opacity: 1;
-  box-shadow: 0 4px 14px rgba(16,185,129,0.08);
-}
-
-.pipeline-info__title {
-  margin: 0 0 6px;
+.pipeline-step-box.is-active .pipeline-step-number {
   color: var(--primary);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
 }
 
-.pipeline-info:not(.is-active) .pipeline-info__title {
-  color: var(--text-soft);
+.pipeline-step-title {
+  margin: 0 0 10px;
+  font-family: var(--font-head);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
 }
 
-.pipeline-info__copy {
+.pipeline-step-desc {
   margin: 0;
-  color: var(--text-soft);
   font-size: 0.78rem;
-  line-height: 1.6;
+  line-height: 1.62;
+  color: var(--text-soft);
+}
+
+/* Responsive vertical timeline for mobile */
+@media (max-width: 959px) {
+  .pipeline-main-line {
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 2px;
+    height: auto;
+    right: auto;
+    background: linear-gradient(180deg, var(--outline-soft), var(--primary-muted) 50%, var(--outline-soft));
+  }
+
+  .pipeline-steps-wrapper {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding-left: 40px;
+  }
+
+  .pipeline-step-box {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    position: relative;
+  }
+
+  .pipeline-step-node {
+    position: absolute;
+    left: -31px; /* Center-align the dot with the vertical line at 20px */
+    top: 22px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .pipeline-step-stem {
+    display: none; /* Hide vertical connecting stem in vertical layout */
+  }
+
+  .pipeline-step-content {
+    width: 100%;
+  }
 }
 
 
@@ -2135,13 +2176,7 @@ html.light-theme .canvas-placeholder {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .pipeline-timeline {
-    gap: 0;
-  }
 
-  .pipeline-node {
-    width: 90px;
-  }
 
   .dashboard-grid {
     grid-template-columns: 1fr;
@@ -2226,22 +2261,7 @@ html.light-theme .canvas-placeholder {
     grid-template-columns: 1fr;
   }
 
-  .pipeline-node {
-    width: 80px;
-  }
 
-  .pipeline-node__label {
-    font-size: 0.68rem;
-  }
-
-  .pipeline-detail__inner {
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .pipeline-detail__title {
-    white-space: normal;
-  }
 
   .feature-story--reverse .feature-story__media,
   .feature-story--reverse .feature-story__body {
