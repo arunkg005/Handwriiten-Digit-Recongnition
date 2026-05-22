@@ -11,8 +11,7 @@ import numpy as np
 from .config import MODEL_PATH, METRICS_PATH, REJECTOR_MODEL_PATH, REJECTOR_METRICS_PATH
 from .inference import DigitPredictor, PredictionResult, PredictionRegion
 from .rejector import (
-    REJECTOR_NOT_A_NUMBER_THRESHOLD,
-    REJECTOR_UNCERTAIN_THRESHOLD,
+    REJECTOR_THRESHOLD,
     build_rejector_features,
     load_rejector,
     train_and_save_rejector,
@@ -81,13 +80,17 @@ class DigitRecognitionService:
         row_span = int(active_rows[-1] - active_rows[0] + 1) if active_rows.size else 0
         col_span = int(active_cols[-1] - active_cols[0] + 1) if active_cols.size else 0
 
-        if row_span <= GEOMETRY_MAX_POINT_SPAN and col_span <= GEOMETRY_MAX_POINT_SPAN:
-            if foreground_ratio <= GEOMETRY_MAX_POINT_FOREGROUND_RATIO:
-                return replace(
-                    region,
-                    status="Uncertain mark. Prediction may be unreliable.",
-                    is_ambiguous=True,
-                )
+        # Reject tiny strokes/dots based on original bounding box size or processed spans
+        if (
+            (region.bbox["width"] < 0.12 and region.bbox["height"] < 0.12)
+            or (row_span <= GEOMETRY_MAX_POINT_SPAN and col_span <= GEOMETRY_MAX_POINT_SPAN and foreground_ratio <= GEOMETRY_MAX_POINT_FOREGROUND_RATIO)
+        ):
+            return replace(
+                region,
+                digit=None,
+                status="Uncertain. Prediction may be unreliable.",
+                is_ambiguous=True,
+            )
 
         if (
             foreground_ratio > GEOMETRY_MAX_FOREGROUND_RATIO
@@ -100,7 +103,7 @@ class DigitRecognitionService:
             return replace(
                 region,
                 digit=None,
-                status="Not a number. Prediction may be unreliable.",
+                status="Uncertain. Prediction may be unreliable.",
                 is_ambiguous=True,
             )
 
@@ -109,15 +112,13 @@ class DigitRecognitionService:
             normalized_image,
         )
         digit_like_probability = float(self._rejector.predict_proba(features.reshape(1, -1))[0][1])
-        if digit_like_probability < REJECTOR_NOT_A_NUMBER_THRESHOLD:
+        if digit_like_probability < REJECTOR_THRESHOLD:
             return replace(
                 region,
                 digit=None,
-                status="Not a number. Prediction may be unreliable.",
+                status="Uncertain. Prediction may be unreliable.",
                 is_ambiguous=True,
             )
-        if digit_like_probability < REJECTOR_UNCERTAIN_THRESHOLD:
-            return replace(region, status="Uncertain mark. Prediction may be unreliable.", is_ambiguous=True)
         return replace(region, status="Prediction ready.", is_ambiguous=False)
 
     def predict_digit(self, image: Any, selection_hint_bbox: Mapping[str, float] | None = None) -> PredictionResult:

@@ -87,12 +87,12 @@ def test_digit_service_marks_low_confidence_prediction_uncertain():
     )
     service = DigitRecognitionService(auto_train=False, rejector_model_path="d:/tmp/rejector.joblib")
     service.predictor = FakePredictor(result)
-    service._rejector = DummyRejector(0.60)
+    service._rejector = DummyRejector(0.50)  # Below REJECTOR_THRESHOLD (0.55)
     service._rejector_mtime = None
 
     gated = service.predict_digit(np.full((280, 280), 255, dtype=np.uint8))
 
-    assert gated.digit == 4
+    assert gated.digit is None
     assert gated.status.startswith("Uncertain")
     assert gated.regions[0].is_ambiguous is True
 
@@ -126,12 +126,12 @@ def test_digit_service_marks_point_like_input_uncertain():
 
     gated = service.predict_digit(np.full((280, 280), 255, dtype=np.uint8))
 
-    assert gated.digit == 4
+    assert gated.digit is None
     assert gated.status.startswith("Uncertain")
     assert gated.regions[0].is_ambiguous is True
 
 
-def test_digit_service_rejects_garbage_as_not_a_number():
+def test_digit_service_rejects_garbage_as_uncertain():
     region = PredictionRegion(
         id="region-1",
         bbox={"x": 0.1, "y": 0.1, "width": 0.3, "height": 0.3},
@@ -165,6 +165,6 @@ def test_digit_service_rejects_garbage_as_not_a_number():
     gated = service.predict_digit(garbage)
 
     assert gated.digit is None
-    assert gated.status.startswith("Not a number")
+    assert gated.status.startswith("Uncertain")
     assert gated.regions[0].digit is None
     assert gated.regions[0].is_ambiguous is True

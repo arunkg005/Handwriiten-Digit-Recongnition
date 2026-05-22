@@ -590,11 +590,9 @@
     predictionEmpty.classList.add("hidden");
     predictionMain.classList.remove("hidden");
     const statusText = activeRegion.status || "Prediction ready.";
-    predictionDigit.textContent = statusText.startsWith("Not a number")
-      ? "Not a number"
-      : activeRegion.is_ambiguous || activeRegion.digit === null
-        ? "Uncertain"
-        : String(activeRegion.digit);
+    predictionDigit.textContent = activeRegion.is_ambiguous || activeRegion.digit === null
+      ? "Uncertain"
+      : String(activeRegion.digit);
     predictionConfidence.textContent = `${(activeRegion.confidence * 100).toFixed(1)}% confidence`;
 
     if (state.regions.length > 1) {
