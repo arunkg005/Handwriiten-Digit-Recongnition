@@ -82,7 +82,7 @@ class DigitRecognitionService:
 
         # Reject tiny strokes/dots based on original bounding box size or processed spans
         if (
-            (region.bbox["width"] < 0.12 and region.bbox["height"] < 0.12)
+            (region.bbox["width"] < 0.10 and region.bbox["height"] < 0.10)
             or (row_span <= GEOMETRY_MAX_POINT_SPAN and col_span <= GEOMETRY_MAX_POINT_SPAN and foreground_ratio <= GEOMETRY_MAX_POINT_FOREGROUND_RATIO)
         ):
             return replace(

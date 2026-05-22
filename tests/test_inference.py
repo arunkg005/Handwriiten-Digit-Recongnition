@@ -87,7 +87,7 @@ def test_digit_service_marks_low_confidence_prediction_uncertain():
     )
     service = DigitRecognitionService(auto_train=False, rejector_model_path="d:/tmp/rejector.joblib")
     service.predictor = FakePredictor(result)
-    service._rejector = DummyRejector(0.50)  # Below REJECTOR_THRESHOLD (0.55)
+    service._rejector = DummyRejector(0.30)  # Below REJECTOR_THRESHOLD (0.35)
     service._rejector_mtime = None
 
     gated = service.predict_digit(np.full((280, 280), 255, dtype=np.uint8))

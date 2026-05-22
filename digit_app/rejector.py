@@ -20,7 +20,7 @@ from .data import load_mnist_dataset, normalize_images, select_subset
 from .preprocess import prepare_canvas_image
 
 REJECTOR_INK_THRESHOLD = 0.12
-REJECTOR_THRESHOLD = 0.55
+REJECTOR_THRESHOLD = 0.35
 
 
 @dataclass(slots=True)
