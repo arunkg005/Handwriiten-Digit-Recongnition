@@ -439,88 +439,182 @@ html:not(.light-theme) .theme-media--light {
   text-transform: uppercase;
 }
 
-.pipeline-steps {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
-}
+/* ── Pipeline Visual Timeline ────────────────────────────────────── */
 
-.pipeline-steps__track {
-  position: absolute;
-  top: 28px;
-  left: calc(10% + 5px);
-  right: calc(10% + 5px);
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-strong) 100%);
-  opacity: 0.35;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.pipeline-step {
-  position: relative;
-  z-index: 1;
+/* Outer wrapper — column layout */
+.pipeline-card__body {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 14px;
-  border: 1px solid var(--outline-soft);
-  border-radius: var(--radius-md);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01)), var(--surface);
-  color: var(--text);
-  text-align: left;
+  gap: 14px;
+}
+
+/* ── Top rail: icon bubbles + connectors ── */
+.pipeline-timeline {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 10px 4px 4px;
+  scrollbar-width: none;
+}
+
+.pipeline-timeline::-webkit-scrollbar {
+  display: none;
+}
+
+/* Node button — just the circle, no text */
+.pipeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0;
+  border: none;
+  background: transparent;
   cursor: pointer;
+}
+
+/* Circular icon bubble */
+.pipeline-node__bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 2px solid var(--outline-soft);
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), var(--surface);
+  color: var(--text-soft);
   transition:
-    transform 0.18s ease,
-    border-color 0.18s ease,
-    background 0.18s ease,
-    box-shadow 0.18s ease;
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    color 0.22s ease,
+    transform 0.2s ease;
 }
 
-.pipeline-step:hover,
-.pipeline-step:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(78, 222, 163, 0.32);
-  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.08);
+.pipeline-node__bubble svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex-shrink: 0;
 }
 
-.pipeline-step.is-active {
-  border-color: rgba(78, 222, 163, 0.4);
-  background: rgba(78, 222, 163, 0.1);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.1);
+.pipeline-node:hover .pipeline-node__bubble {
+  border-color: rgba(78, 222, 163, 0.38);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.12);
+  color: var(--text);
 }
 
-.pipeline-step__index {
+.pipeline-node.is-active .pipeline-node__bubble {
+  border-color: var(--primary);
+  background: linear-gradient(135deg, rgba(78,222,163,0.2), rgba(78,222,163,0.07));
+  box-shadow:
+    0 0 0 4px rgba(78,222,163,0.12),
+    0 8px 22px rgba(16, 185, 129, 0.18);
+  color: var(--primary);
+  transform: translateY(-3px);
+}
+
+/* Number badge — top-right corner of bubble */
+.pipeline-node__index {
+  position: absolute;
+  top: -5px;
+  right: -5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
-  background: rgba(78, 222, 163, 0.14);
+  border: 1.5px solid var(--surface-low);
+  background: rgba(78, 222, 163, 0.18);
   color: var(--primary);
-  font-size: 0.82rem;
+  font-size: 0.62rem;
   font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
 }
 
-.pipeline-step.is-active .pipeline-step__index {
+.pipeline-node.is-active .pipeline-node__index {
   background: var(--primary);
-  color: var(--primary-text);
+  color: #07180e;
+  border-color: var(--primary);
 }
 
-.pipeline-step__text {
-  font-size: 0.88rem;
-  font-weight: 600;
-  line-height: 1.45;
+/* Connector line + arrow between nodes */
+.pipeline-connector {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 16px;
+  max-width: 64px;
+}
+
+.pipeline-connector__line {
+  flex: 1;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(78,222,163,0.38), rgba(78,222,163,0.12));
+}
+
+.pipeline-connector__arrow {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  color: rgba(78, 222, 163, 0.4);
+  margin-left: -1px;
+}
+
+/* ── Bottom row: 5 info cards, one per step ── */
+.pipeline-info-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pipeline-info {
+  padding: 12px 14px;
+  border: 1px solid var(--outline-soft);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)), var(--surface);
+  opacity: 0.52;
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pipeline-info.is-active {
+  border-color: rgba(78, 222, 163, 0.38);
+  background: linear-gradient(135deg, rgba(78,222,163,0.1), rgba(78,222,163,0.03));
+  opacity: 1;
+  box-shadow: 0 4px 14px rgba(16,185,129,0.08);
+}
+
+.pipeline-info__title {
+  margin: 0 0 6px;
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.pipeline-info:not(.is-active) .pipeline-info__title {
   color: var(--text-soft);
 }
 
-.pipeline-step.is-active .pipeline-step__text {
-  color: var(--text);
+.pipeline-info__copy {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  line-height: 1.6;
 }
+
 
 
 .about-visuals,
@@ -2041,8 +2135,12 @@ html.light-theme .canvas-placeholder {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .pipeline-steps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .pipeline-timeline {
+    gap: 0;
+  }
+
+  .pipeline-node {
+    width: 90px;
   }
 
   .dashboard-grid {
@@ -2122,11 +2220,27 @@ html.light-theme .canvas-placeholder {
   }
 
   .feature-grid,
-  .pipeline-steps,
   .about-simple-grid,
   .about-brief-grid,
   .feature-showcase-grid {
     grid-template-columns: 1fr;
+  }
+
+  .pipeline-node {
+    width: 80px;
+  }
+
+  .pipeline-node__label {
+    font-size: 0.68rem;
+  }
+
+  .pipeline-detail__inner {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pipeline-detail__title {
+    white-space: normal;
   }
 
   .feature-story--reverse .feature-story__media,
