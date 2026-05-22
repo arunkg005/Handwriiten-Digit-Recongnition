@@ -435,6 +435,100 @@ html:not(.light-theme) .theme-media--light {
   background: rgba(78, 222, 163, 0.07);
 }
 
+.pipeline-card__summary--visual {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.pipeline-card__summary-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.pipeline-timeline {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  min-height: 126px;
+  padding: 8px 4px 4px;
+}
+
+.pipeline-timeline__rail {
+  position: absolute;
+  top: 23px;
+  left: 18px;
+  right: 18px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1fa1ff 0%, #1576c8 24%, #135d99 48%, #0f3e63 74%, #0d1f32 100%);
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.pipeline-timeline__steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  z-index: 1;
+}
+
+.pipeline-timeline__step {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  min-height: 106px;
+}
+
+.pipeline-timeline__node {
+  position: relative;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  margin-top: 8px;
+  border: 3px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  background: var(--timeline-accent);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+.pipeline-timeline__node::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 2px);
+  width: 2px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--timeline-accent);
+  transform: translateX(-50%);
+}
+
+.pipeline-timeline__step.is-active .pipeline-timeline__node {
+  width: 34px;
+  height: 34px;
+  margin-top: 6px;
+  border-color: rgba(255, 255, 255, 0.65);
+  background: #2b9ef5;
+}
+
+.pipeline-timeline__card {
+  width: 100%;
+  min-height: 72px;
+  border: 4px solid var(--timeline-accent);
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(244, 247, 246, 0.97));
+  box-shadow:
+    0 10px 18px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.52);
+}
+
+.pipeline-timeline__step.is-active .pipeline-timeline__card {
+  border-color: #7bc1ff;
+  background: linear-gradient(180deg, rgba(244, 251, 255, 0.98), rgba(229, 245, 255, 0.98));
+}
+
 .pipeline-card__label,
 .fact-tile__eyebrow,
 .tips-card__eyebrow {

@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Sora:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/static/styles.css?v=24" />
+    <link rel="stylesheet" href="/static/styles.css?v=25" />
   </head>
   <body>
     <main class="page-shell">
@@ -291,12 +291,40 @@
         </div>
 
         <article class="pipeline-card" aria-label="Project pipeline timeline">
-          <div class="pipeline-card__summary">
-            <p class="pipeline-card__label">Pipeline timeline</p>
-            <h4 id="pipeline-step-title">1. Capture the canvas stroke</h4>
-            <p id="pipeline-step-copy">
-              The browser records what you draw, tracks the latest selection hint, and keeps the active stroke in sync with the live canvas.
-            </p>
+          <div class="pipeline-card__summary pipeline-card__summary--visual">
+            <div class="pipeline-timeline" aria-hidden="true">
+              <span class="pipeline-timeline__rail"></span>
+              <div class="pipeline-timeline__steps">
+                <span class="pipeline-timeline__step is-active" style="--timeline-accent: #27a0ff;">
+                  <span class="pipeline-timeline__node"></span>
+                  <span class="pipeline-timeline__card"></span>
+                </span>
+                <span class="pipeline-timeline__step" style="--timeline-accent: #158fd8;">
+                  <span class="pipeline-timeline__node"></span>
+                  <span class="pipeline-timeline__card"></span>
+                </span>
+                <span class="pipeline-timeline__step" style="--timeline-accent: #156aa8;">
+                  <span class="pipeline-timeline__node"></span>
+                  <span class="pipeline-timeline__card"></span>
+                </span>
+                <span class="pipeline-timeline__step" style="--timeline-accent: #123f62;">
+                  <span class="pipeline-timeline__node"></span>
+                  <span class="pipeline-timeline__card"></span>
+                </span>
+                <span class="pipeline-timeline__step" style="--timeline-accent: #0f1d29;">
+                  <span class="pipeline-timeline__node"></span>
+                  <span class="pipeline-timeline__card"></span>
+                </span>
+              </div>
+            </div>
+
+            <div class="pipeline-card__summary-copy">
+              <p class="pipeline-card__label">Pipeline timeline</p>
+              <h4 id="pipeline-step-title">1. Capture the canvas stroke</h4>
+              <p id="pipeline-step-copy">
+                The browser records what you draw, tracks the latest selection hint, and keeps the active stroke in sync with the live canvas.
+              </p>
+            </div>
           </div>
 
           <div class="pipeline-steps" aria-label="Pipeline steps">
@@ -335,27 +363,9 @@
 
         <div class="feature-story-list">
           <article class="feature-story">
-            <div class="feature-story__media feature-story__media--infographic" aria-hidden="true">
-              <div class="feature-visual feature-visual--drawing">
-                <div class="feature-visual__head">
-                  <span class="feature-visual__title">Live stroke</span>
-                  <span class="feature-visual__pill">Realtime</span>
-                </div>
-
-                <div class="feature-visual__canvas">
-                  <span class="feature-visual__grid"></span>
-                  <span class="feature-visual__stroke feature-visual__stroke--one"></span>
-                  <span class="feature-visual__stroke feature-visual__stroke--two"></span>
-                  <span class="feature-visual__stroke feature-visual__stroke--three"></span>
-                  <span class="feature-visual__hint">Draw → normalize → predict</span>
-                </div>
-
-                <div class="feature-visual__legend">
-                  <span class="feature-visual__legend-chip">Pen</span>
-                  <span class="feature-visual__legend-chip">Undo</span>
-                  <span class="feature-visual__legend-chip">Live update</span>
-                </div>
-              </div>
+            <div class="feature-story__media" aria-hidden="true">
+              <img src="/static/images/current/workflow-light.gif" alt="Light mode feature demo showing drawing and prediction refresh." class="theme-media theme-media--light" />
+              <img src="/static/images/current/workflow-dark.gif" alt="Dark mode feature demo showing drawing and prediction refresh." class="theme-media theme-media--dark" />
             </div>
             <div class="feature-story__body">
               <span class="feature-story__icon" aria-hidden="true">
