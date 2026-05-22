@@ -1,0 +1,21 @@
+{
+  "model_path": "D:\\Projects\\VS_Code\\Handwritten Digits Recognition\\artifacts\\model.joblib",
+  "metrics_path": "D:\\Projects\\VS_Code\\Handwritten Digits Recognition\\artifacts\\metrics.json",
+  "confusion_matrix_path": "D:\\Projects\\VS_Code\\Handwritten Digits Recognition\\artifacts\\confusion_matrix.png",
+  "test_accuracy": 0.9812,
+  "classes": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "num_training_examples": 66000,
+  "num_test_examples": 10000,
+  "model_name": "mlp_classifier"
+}

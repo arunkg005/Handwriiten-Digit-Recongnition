@@ -1,0 +1,14 @@
+.git
+.gitignore
+.venv
+.pytest_cache
+.tmp
+__pycache__
+tests/__pycache__
+docs/archive
+test_results.txt
+artifacts/capture_frames
+artifacts/chrome-profile
+artifacts/edge-profile
+artifacts/.mplconfig
+web/static/images/current

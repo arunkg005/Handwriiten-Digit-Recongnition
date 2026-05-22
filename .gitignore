@@ -1,0 +1,25 @@
+.venv/
+.tmp/
+.pytest_cache/
+artifacts/*
+!artifacts/model.joblib
+!artifacts/metrics.json
+!artifacts/rejector.joblib
+!artifacts/rejector_metrics.json
+!artifacts/confusion_matrix.png
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Local data and environment files
+mnist.npz
+.env
+.env.*
+test_results.txt
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

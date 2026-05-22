@@ -1,0 +1,8 @@
+{
+  "model_path": "D:\\Projects\\VS_Code\\Handwritten Digits Recognition\\artifacts\\rejector.joblib",
+  "metrics_path": "D:\\Projects\\VS_Code\\Handwritten Digits Recognition\\artifacts\\rejector_metrics.json",
+  "accuracy": 1.0,
+  "num_positive_examples": 80,
+  "num_negative_examples": 80,
+  "model_name": "digit_rejector"
+}
