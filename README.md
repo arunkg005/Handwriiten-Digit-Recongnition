@@ -1,15 +1,3 @@
----
-title: Handwritten Digit Recognition
-emoji: ✍️
-colorFrom: green
-colorTo: gray
-sdk: docker
-app_port: 7860
-pinned: false
-license: mit
-short_description: 'A handwritten digit recognizer'
----
-
 # Handwritten Digit Recognition
 
 A single FastAPI app with a custom HTML/CSS/JS frontend for recognizing handwritten digits from a browser canvas. The same codebase serves the UI, the prediction API, shared preprocessing, and model training.
